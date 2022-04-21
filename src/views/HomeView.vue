@@ -1,34 +1,35 @@
 <template>
   <div class="home">
-    <p ref="p">
-      We did it, Vue. My name is {{ name }} and my light is {{ light }}+.
-    </p>
+    <input type="text" v-model="search" />
 
-    <button @click="handleClick">Ye</button>
-    <button @click="light++">+</button>
+    <p>search term: {{ search }}</p>
 
-    <input type="text" v-model="name" />
+    <div v-for="name in matchingNames" :key="name">{{ name }}</div>
   </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import { computed, ref } from 'vue'
 
 export default {
   name: 'HomeView',
 
   setup() {
-    const name = ref('Isaac')
-    const light = ref(99)
+    const names = ref([
+      'thierre',
+      'rhamys',
+      'isaac',
+      'atos',
+      'jéssica',
+      'abner',
+    ])
+    const search = ref('')
 
-    const p = ref(null)
+    const matchingNames = computed(() => {
+      return names.value.filter((name) => name.includes(search.value))
+    })
 
-    const handleClick = () => {
-      p.value.textContent = 'Ye'
-      name.value = name.value + ':)'
-    }
-
-    return { name, light, handleClick, p }
+    return { names, search, matchingNames }
   },
 }
 </script>
